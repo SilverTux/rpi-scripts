@@ -3,7 +3,7 @@
 set -euo pipefail
 
 PLEX_BASE_DIR=${1:-${HOME}/tmp/plex}
-PLEX_TV_DIR=${HOME}/tmp/qbittorrent/downloads
+PLEX_TV_DIR=/mnt/rpi
 
 docker run -d \
   --name=plex \
