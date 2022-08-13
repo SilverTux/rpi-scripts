@@ -3,7 +3,17 @@
 set -euo pipefail
 
 PLEX_BASE_DIR=${1:-${HOME}/tmp/plex}
-PLEX_TV_DIR=/mnt/rpi
+
+NFS_VOL_NAME=plexnfs
+NFS_LOCAL_MNT=/tv
+NFS_SERVER=192.168.1.139
+NFS_SHARE=/
+NFS_OPTS=vers=4,soft
+
+DOCKER_MOUNT_PARAMS="src=${NFS_VOL_NAME},dst=${NFS_LOCAL_MNT}"
+DOCKER_MOUNT_PARAMS+=",volume-opt=device=:${NFS_SHARE}"
+DOCKER_MOUNT_PARAMS+=",\"volume-opt=o=addr=${NFS_SERVER},${NFS_OPTS}\""
+DOCKER_MOUNT_PARAMS+=",type=volume,volume-driver=local,volume-opt=type=nfs"
 
 docker run -d \
   --name=plex \
@@ -13,7 +23,7 @@ docker run -d \
   -e VERSION=docker \
   -e PLEX_CLAIM= `#optional` \
   -v "${PLEX_BASE_DIR}/library:/config" \
-  -v "${PLEX_TV_DIR}:/tv" \
   -v "${PLEX_BASE_DIR}/movies:/movies" \
+  --mount ${DOCKER_MOUNT_PARAMS} \
   --restart unless-stopped \
   lscr.io/linuxserver/plex:latest
