@@ -3,6 +3,12 @@
 set -euo pipefail
 
 SSH_CONFIG=${HOME}/tmp/openssh-server
+NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
+IMAGE="lscr.io/linuxserver/openssh-server:latest"
+
+if [ "${RPI_SERVICE_UPDATE}" = "True" ]; then
+  docker pull "${IMAGE}"
+fi
 
 #  -e PUBLIC_KEY=yourpublickey `#optional` \
 #  -e PUBLIC_KEY_FILE=/path/to/file `#optional` \
@@ -11,7 +17,7 @@ SSH_CONFIG=${HOME}/tmp/openssh-server
 #  -e USER_PASSWORD_FILE=/path/to/file `#optional` \
 
 docker run -d \
-  --name=openssh-server \
+  --name="${NAME}" \
   --hostname=openssh-server `#optional` \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -24,4 +30,4 @@ docker run -d \
   -v ${SSH_CONFIG}:/config \
   -v /tmp:/tmp \
   --restart unless-stopped \
-  lscr.io/linuxserver/openssh-server:latest
+  "${IMAGE}"

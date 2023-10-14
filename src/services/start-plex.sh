@@ -3,6 +3,12 @@
 set -euo pipefail
 
 PLEX_BASE_DIR=${1:-${HOME}/tmp/plex}
+NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
+IMAGE="lscr.io/linuxserver/plex:latest"
+
+if [ "${RPI_SERVICE_UPDATE}" = "True" ]; then
+  docker pull "${IMAGE}"
+fi
 
 NFS_VOL_NAME=plexnfs
 NFS_LOCAL_MNT=/tv
@@ -16,7 +22,7 @@ DOCKER_MOUNT_PARAMS+=",\"volume-opt=o=addr=${NFS_SERVER},${NFS_OPTS}\""
 DOCKER_MOUNT_PARAMS+=",type=volume,volume-driver=local,volume-opt=type=nfs"
 
 docker run -d \
-  --name=plex \
+  --name="${NAME}" \
   --net=host \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -26,4 +32,4 @@ docker run -d \
   -v "${PLEX_BASE_DIR}/movies:/movies" \
   --mount ${DOCKER_MOUNT_PARAMS} \
   --restart unless-stopped \
-  lscr.io/linuxserver/plex:latest
+  "${IMAGE}"

@@ -3,9 +3,15 @@
 set -euo pipefail
 
 TRANSMISSION_BASE_DIR=${1:-${HOME}/transmission}
+NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
+IMAGE="lscr.io/linuxserver/transmission:latest"
+
+if [ "${RPI_SERVICE_UPDATE}" = "True" ]; then
+  docker pull "${IMAGE}"
+fi
 
 docker run -d \
-  --name=transmission \
+  --name="${NAME}" \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/Budapest \
@@ -17,4 +23,4 @@ docker run -d \
   -v "${TRANSMISSION_BASE_DIR}/downloads:/downloads" \
   -v "${TRANSMISSION_BASE_DIR}/folder:/watch" \
   --restart unless-stopped \
-  lscr.io/linuxserver/transmission:latest
+  "${IMAGE}"

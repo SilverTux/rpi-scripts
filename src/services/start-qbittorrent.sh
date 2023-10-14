@@ -4,9 +4,15 @@ set -euo pipefail
 
 QBITTORRENT_BASE_DIR=${1:-${HOME}/qbittorrent}
 SSD_DIR=${HOME}/ssd
+NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
+IMAGE="lscr.io/linuxserver/qbittorrent:latest"
+
+if [ "${RPI_SERVICE_UPDATE}" = "True" ]; then
+  docker pull "${IMAGE}"
+fi
 
 docker run -d \
-  --name=qbittorrent \
+  --name="${NAME}" \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/Budapest \
@@ -18,4 +24,4 @@ docker run -d \
   -v "${QBITTORRENT_BASE_DIR}/downloads:/downloads" \
   -v "${SSD_DIR}:/ssd" \
   --restart unless-stopped \
-  lscr.io/linuxserver/qbittorrent:latest
+  "${IMAGE}"
