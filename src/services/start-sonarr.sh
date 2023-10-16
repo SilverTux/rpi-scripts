@@ -3,6 +3,7 @@
 set -euo pipefail
 
 SONARR_BASE_DIR=${1:-${HOME}/tmp/sonarr}
+SSD_DIR=${HOME}/ssd/data
 NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
 IMAGE="lscr.io/linuxserver/sonarr:latest"
 
@@ -17,7 +18,7 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 8989:8989 \
   -v ${SONARR_BASE_DIR}/data:/config \
-  -v ${SONARR_BASE_DIR}/tvseries:/tv `#optional` \
-  -v ${SONARR_BASE_DIR}/downloads:/downloads `#optional` \
+  -v ${SSD_DIR}/media/tvseries:/tv `#optional` \
+  -v ${SSD_DIR}/torrents:/downloads `#optional` \
   --restart unless-stopped \
   "${IMAGE}"

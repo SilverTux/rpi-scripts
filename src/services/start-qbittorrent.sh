@@ -3,7 +3,7 @@
 set -euo pipefail
 
 QBITTORRENT_BASE_DIR=${1:-${HOME}/qbittorrent}
-SSD_DIR=${HOME}/ssd
+SSD_DIR=${HOME}/ssd/data/torrents
 NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
 IMAGE="lscr.io/linuxserver/qbittorrent:latest"
 

@@ -34,6 +34,7 @@ echo "curl -O https://raw.githubusercontent.com/pi-hole/docker-pi-hole/master/ex
 
 # Load nfs kernel module
 modprobe nfsd
+echo "nfsd" >> /etc/modules
 
 # Edit crontab
 echo "call 'crontab -e' and add the following line:"
@@ -45,3 +46,4 @@ ls -l /dev/disk/by-uuid/
 blkid
 echo "UUID=4922bf32-f137-45fb-ab44-cba26d455936 /home/pi/ssd/ ext4 defaults,auto,users,rw,nofail 0 0" >> /etc/fstab
 chown pi:pi -R ssd
+mount -a

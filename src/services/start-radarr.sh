@@ -3,6 +3,7 @@
 set -euo pipefail
 
 RADARR_BASE_DIR=${1:-${HOME}/tmp/radarr}
+SSD_DIR=${HOME}/ssd/data
 NAME=$(basename $0 | sed -e "s/^start-//" -e "s/.sh$//")
 IMAGE="lscr.io/linuxserver/radarr:latest"
 
@@ -17,7 +18,7 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 7878:7878 \
   -v ${RADARR_BASE_DIR}:/config \
+  -v ${SSD_DIR}/media/movies:/movies `#optional` \
+  -v ${SSD_DIR}/torrents:/downloads `#optional` \
   --restart unless-stopped \
   "${IMAGE}"
-#  -v /path/to/movies:/movies `#optional` \
-#  -v /path/to/downloadclient-downloads:/downloads `#optional` \
