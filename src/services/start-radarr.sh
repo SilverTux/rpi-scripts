@@ -18,7 +18,6 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 7878:7878 \
   -v ${RADARR_BASE_DIR}:/config \
-  -v ${SSD_DIR}/media/movies:/movies `#optional` \
-  -v ${SSD_DIR}/torrents:/downloads `#optional` \
+  -v ${SSD_DIR}:/data `#optional` \
   --restart unless-stopped \
   "${IMAGE}"

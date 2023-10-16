@@ -18,7 +18,6 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 8989:8989 \
   -v ${SONARR_BASE_DIR}/data:/config \
-  -v ${SSD_DIR}/media/tvseries:/tv `#optional` \
-  -v ${SSD_DIR}/torrents:/downloads `#optional` \
+  -v ${SSD_DIR}:/data `#optional` \
   --restart unless-stopped \
   "${IMAGE}"
