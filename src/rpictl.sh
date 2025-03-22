@@ -5,7 +5,7 @@ set -euo pipefail
 GIT_REPO="${GIT_REPO:-$(git -C $(dirname ${BASH_SOURCE[0]}) rev-parse --show-toplevel)}"
 ACTION="NOP"
 export RPI_SERVICE_UPDATE="False"
-MEDIA_SERVICES=( nfs nginx prowlarr radarr sonarr overseerr bazarr qbittorrent )
+MEDIA_SERVICES=( nfs nginx prowlarr flaresolverr radarr sonarr overseerr bazarr qbittorrent )
 
 function usage() {
   cat <<EOF
