@@ -16,5 +16,6 @@ docker run -d \
   --restart=unless-stopped \
   -e TZ=Europe/Budapest \
   -v "${HOMEASSISTANT_BASE_DIR}:/config" \
+  -v /dev/bus/usb:/dev/bus/usb \
   --network=host \
   "${IMAGE}"
